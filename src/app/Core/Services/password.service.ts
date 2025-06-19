@@ -15,9 +15,15 @@ export class PasswordService {
     return this.http.get<Password[]>(this.apiUrl).pipe(
       catchError((error) => {
         console.error('Failed to fetch password:', error);
-        return throwError(
-          () => new Error('Unable to load passwords.')
-        );
+        return throwError(() => new Error('Unable to load passwords.'));
+      })
+    );
+  }
+  add(password: Password): Observable<any> {
+    return this.http.post(this.apiUrl, password).pipe(
+      catchError((error) => {
+        console.error('Failed to fetch password:', error);
+        return throwError(() => new Error('Unable to load passwords.'));
       })
     );
   }
