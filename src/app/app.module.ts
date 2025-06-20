@@ -18,6 +18,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { PasswordListComponent } from './Components/password-list/password-list.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 
 registerLocaleData(en);
@@ -33,6 +34,7 @@ registerLocaleData(en);
     NzDividerModule,
     NzModalModule,
     ReactiveFormsModule,
+    NzInputModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
