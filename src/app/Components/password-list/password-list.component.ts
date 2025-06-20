@@ -87,4 +87,15 @@ export class PasswordListComponent {
     this.currentEditId = data.id;
     this.PasswordForm.patchValue(data);
   }
+
+  deletePassword(id: number): void {
+    this.passwordService.delete(id).subscribe({
+      next: () => {
+        this.getAllPasswords();
+      },
+      error: (err) => {
+        console.error('Delete failed:', err);
+      },
+    });
+  }
 }
