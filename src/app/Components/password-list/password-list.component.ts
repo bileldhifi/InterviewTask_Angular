@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Password } from '../../Core/Models/Password.model';
 import { PasswordService } from '../../Core/Services/password.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-password-list',
@@ -18,7 +19,8 @@ export class PasswordListComponent {
 
   constructor(
     private passwordService: PasswordService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notification: NzNotificationService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +65,10 @@ export class PasswordListComponent {
         next: () => {
           this.closeModal();
           this.getAllPasswords();
+          this.notification.info(
+            'Password Updated',
+            'Password details have been updated.'
+          );
         },
         error: (err) => {
           console.error('Update failed:', err);
@@ -74,6 +80,10 @@ export class PasswordListComponent {
         next: () => {
           this.closeModal();
           this.getAllPasswords();
+          this.notification.success(
+            'Password Created',
+            'A new password has been added successfully.'
+          );
         },
         error: (err) => {
           console.error('Add failed:', err);
@@ -89,13 +99,19 @@ export class PasswordListComponent {
   }
 
   deletePassword(id: number): void {
-    this.passwordService.delete(id).subscribe({
-      next: () => {
-        this.getAllPasswords();
-      },
-      error: (err) => {
-        console.error('Delete failed:', err);
-      },
-    });
+    if (confirm('Are you sure you want to delete this password?')) {
+      this.passwordService.delete(id).subscribe({
+        next: () => {
+          this.getAllPasswords();
+          this.notification.warning(
+            'Password Deleted',
+            'The password has been deleted.'
+          );
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+        },
+      });
+    }
   }
 }

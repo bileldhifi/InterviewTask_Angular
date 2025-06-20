@@ -19,6 +19,7 @@ import { PasswordListComponent } from './Components/password-list/password-list.
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 registerLocaleData(en);
 @NgModule({
   declarations: [AppComponent, PasswordListComponent],
@@ -31,7 +32,7 @@ registerLocaleData(en);
     NzIconModule,
     NzDividerModule,
     NzModalModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
