@@ -11,9 +11,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class PasswordListComponent {
   listOfData: Password[] = [];
 
-  isAddModalVisible = false;
-  isAdding = false;
-  addPasswordForm!: FormGroup;
+  isModalVisible = false;
+  PasswordForm!: FormGroup;
+
+  currentEditId: number | null = null;
 
   constructor(
     private passwordService: PasswordService,
@@ -22,7 +23,7 @@ export class PasswordListComponent {
 
   ngOnInit(): void {
     this.getAllPasswords();
-    this.addPasswordForm = this.fb.group({
+    this.PasswordForm = this.fb.group({
       category: ['', Validators.required],
       app: ['', Validators.required],
       userName: ['', Validators.required],
@@ -43,29 +44,47 @@ export class PasswordListComponent {
   }
 
   openAddModal(): void {
-    this.isAddModalVisible = true;
-    this.addPasswordForm.reset();
+    this.isModalVisible = true;
+    this.PasswordForm.reset();
   }
 
-  closeAddModal(): void {
-    this.isAddModalVisible = false;
+  closeModal(): void {
+    this.isModalVisible = false;
   }
 
-  submitAddForm(): void {
-    if (this.addPasswordForm.invalid) return;
+  submitForm(): void {
+    if (this.PasswordForm.invalid) return;
 
-    this.isAdding = true;
+    const formData = this.PasswordForm.value;
 
-    this.passwordService.add(this.addPasswordForm.value).subscribe({
-      next: () => {
-        this.isAddModalVisible = false;
-        this.isAdding = false;
-        this.getAllPasswords();
-      },
-      error: (err: any) => {
-        console.error('Add failed:', err);
-        this.isAdding = false;
-      },
-    });
+    if (this.currentEditId) {
+      // EDIT
+      this.passwordService.update(this.currentEditId, formData).subscribe({
+        next: () => {
+          this.closeModal();
+          this.getAllPasswords();
+        },
+        error: (err) => {
+          console.error('Update failed:', err);
+        },
+      });
+    } else {
+      // ADD
+      this.passwordService.add(formData).subscribe({
+        next: () => {
+          this.closeModal();
+          this.getAllPasswords();
+        },
+        error: (err) => {
+          console.error('Add failed:', err);
+        },
+      });
+    }
+  }
+
+  openEditModal(data: Password): void {
+    this.isModalVisible = true;
+    this.currentEditId = data.id;
+    this.PasswordForm.patchValue(data);
   }
 }
