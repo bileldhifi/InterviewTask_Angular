@@ -22,5 +22,7 @@ This is the frontend of a password management application built with Angular and
 ## 📦 Installation
 
 1- git clone https://github.com/bileldhifi/InterviewTask_Angular.git
+
 2- cd InterviewTask_Angular
+
 3- npm i
