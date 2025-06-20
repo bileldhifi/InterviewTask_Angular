@@ -19,7 +19,6 @@ export class PasswordListComponent {
 
   passwordVisible: boolean = false;
 
-
   constructor(
     private passwordService: PasswordService,
     private fb: FormBuilder,
@@ -37,35 +36,36 @@ export class PasswordListComponent {
   }
 
   togglePasswordVisibility(): void {
-  this.passwordVisible = !this.passwordVisible;
-}
+    this.passwordVisible = !this.passwordVisible;
+  }
 
-// modal manager
-openAddModal(): void {
-  this.isModalVisible = true;
-  this.PasswordForm.reset();
-}
+  // modal manager
+  openAddModal(): void {
+    this.isModalVisible = true;
+    this.PasswordForm.reset();
+    this.currentEditId = null;
+  }
 
-closeModal(): void {
-  this.isModalVisible = false;
-}
+  closeModal(): void {
+    this.isModalVisible = false;
+  }
 
-// Get password
-getAllPasswords(): void {
-  this.passwordService.getAll().subscribe({
-    next: (data) => {
-      this.listOfData = data;
-      console.log(this.listOfData);
-    },
-    error: (err) => {
-      console.error('error while fetching passwrds: ', err);
-    },
-  });
-}
+  // Get password
+  getAllPasswords(): void {
+    this.passwordService.getAll().subscribe({
+      next: (data) => {
+        this.listOfData = data;
+        console.log(this.listOfData);
+      },
+      error: (err) => {
+        console.error('error while fetching passwrds: ', err);
+      },
+    });
+  }
 
-// Post password
-submitForm(): void {
-  if (this.PasswordForm.invalid) return;
+  // Post password
+  submitForm(): void {
+    if (this.PasswordForm.invalid) return;
 
     const formData = this.PasswordForm.value;
 
@@ -106,7 +106,12 @@ submitForm(): void {
   openEditModal(data: Password): void {
     this.isModalVisible = true;
     this.currentEditId = data.id;
-    this.PasswordForm.patchValue(data);
+    this.PasswordForm.patchValue({
+      category: data.category,
+      app: data.app,
+      userName: data.userName,
+      encryptedPassword: '',
+    });
   }
 
   // delete password
