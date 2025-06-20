@@ -65,8 +65,13 @@ export class PasswordListComponent {
 
   // Post password
   submitForm(): void {
-    if (this.PasswordForm.invalid) return;
-
+if (this.PasswordForm.invalid) {
+    Object.values(this.PasswordForm.controls).forEach(control => {
+      control.markAsTouched();
+      control.updateValueAndValidity();
+    });
+    return;
+  }
     const formData = this.PasswordForm.value;
 
     if (this.currentEditId) {
