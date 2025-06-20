@@ -19,7 +19,9 @@ import { PasswordListComponent } from './Components/password-list/password-list.
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
-
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+const icons = Object.values(AllIcons);
 
 registerLocaleData(en);
 @NgModule({
@@ -34,10 +36,12 @@ registerLocaleData(en);
     NzDividerModule,
     NzModalModule,
     ReactiveFormsModule,
-    NzInputModule
+    NzInputModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    { provide: NZ_ICONS, useValue: icons },
+
     provideAnimationsAsync(),
     provideHttpClient(),
   ],
